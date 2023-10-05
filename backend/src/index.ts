@@ -1,16 +1,17 @@
 import express, { Express, Request, Response, Application } from "express"
 import dotenv from "dotenv"
 
-//For env File
 dotenv.config()
+
+import "./database"
+import productRoutes from "./routes/product"
 
 const app: Application = express()
 const port = process.env.PORT || 8000
 
-app.get("/", (req: Request, res: Response) => {
-	res.send("Welcome to Express & TypeScript Server")
-})
+app.use(express.json())
+app.use(productRoutes)
 
 app.listen(port, () => {
-	console.log(`Server is Fire at http://localhost:${port}`)
+	console.log(`Server is up at http://localhost:${port}`)
 })
