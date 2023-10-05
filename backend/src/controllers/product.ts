@@ -23,6 +23,7 @@ export const getProducts = async (
 
 		res.status(200).json(products)
 	} catch (error) {
-		throw error
+		console.log(error)
+		res.status(500).send("Error fetching products")
 	}
 }
