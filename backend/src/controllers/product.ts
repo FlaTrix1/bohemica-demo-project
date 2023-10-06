@@ -1,9 +1,10 @@
 import { Request, Response } from "express"
 import Product from "../models/product"
+import { IProduct, IProductsQuery, IErrorResponse } from "../types"
 
 export const getProducts = async (
-	req: Request,
-	res: Response
+	req: Request<{}, {}, {}, IProductsQuery>,
+	res: Response<IProduct[] | IErrorResponse>
 ): Promise<void> => {
 	const { search } = req.query
 
@@ -24,6 +25,6 @@ export const getProducts = async (
 		res.status(200).json(products)
 	} catch (error) {
 		console.log(error)
-		res.status(500).send("Error fetching products")
+		res.status(500).send({ status: 500, message: "Error fetching products" })
 	}
 }

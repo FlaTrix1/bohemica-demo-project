@@ -1,31 +1,28 @@
 <script setup lang="ts">
-import HelloWorld from "./components/HelloWorld.vue"
+import { ref } from "vue"
+import { IProductRes, IProduct } from "./types"
+import SearchBar from "./components/SearchBar.vue"
+import ProductList from "./components/ProductList.vue"
+
+const products = ref<IProduct[]>([])
+
+const fetchProducts = async (search?: string) => {
+	const res = await fetch(
+		`http://localhost:8000/products?search=${search || ""}`
+	)
+	const data = (await res.json()) as IProductRes
+	products.value = [...data]
+}
+
+fetchProducts()
 </script>
 
 <template>
-	<div>
-		<a href="https://vitejs.dev" target="_blank">
-			<img src="/vite.svg" class="logo" alt="Vite logo" />
-		</a>
-		<div class="font-bold">aaaa</div>
-		<a href="https://vuejs.org/" target="_blank">
-			<img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-		</a>
-	</div>
-	<HelloWorld msg="Vite + Vue" />
-</template>
+	<div class="m-4">
+		<SearchBar @fetch="fetchProducts" />
 
-<style scoped>
-.logo {
-	height: 6em;
-	padding: 1.5em;
-	will-change: filter;
-	transition: filter 300ms;
-}
-.logo:hover {
-	filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-	filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
+		<div class="mt-4">
+			<ProductList :products="products" />
+		</div>
+	</div>
+</template>
