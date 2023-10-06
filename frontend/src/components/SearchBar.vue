@@ -13,28 +13,24 @@
 
 <script setup lang="ts">
 import { ref } from "vue"
+import { debounce } from "../utils"
 
 const emits = defineEmits(["fetch"])
 
 const model = ref("")
 let timeoutID: ReturnType<typeof setTimeout>
 
-const debounce = (fn: Function, delay: number) => {
-	return (...args: any[]) => {
-		clearTimeout(timeoutID)
-		timeoutID = setTimeout(() => {
-			fn(...args)
-		}, delay)
-	}
-}
-
 const setModel = (e: Event) => {
 	if (e.target instanceof HTMLInputElement) {
 		model.value = e.target.value
 
-		debounce(() => {
-			emits("fetch", model.value)
-		}, 300)()
+		debounce(
+			() => {
+				emits("fetch", model.value)
+			},
+			timeoutID,
+			300
+		)()
 	}
 }
 </script>
