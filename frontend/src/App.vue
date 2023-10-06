@@ -8,7 +8,7 @@ const products = ref<IProduct[]>([])
 
 const fetchProducts = async (search?: string) => {
 	const res = await fetch(
-		`http://localhost:8000/products?search=${search || ""}`
+		`${import.meta.env.VITE_BE_URL}/products?search=${search || ""}`
 	)
 	const data = (await res.json()) as IProductRes
 	products.value = [...data]
