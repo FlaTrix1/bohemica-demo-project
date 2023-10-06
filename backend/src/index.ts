@@ -17,3 +17,6 @@ app.use(productRoutes)
 app.listen(port, () => {
 	console.log(`Server is up at http://localhost:${port}`)
 })
+
+// Export for Express API
+module.exports = app
